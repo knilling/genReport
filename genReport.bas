@@ -79,7 +79,15 @@ Private Sub bulleted_list(a)
 End Sub
 
 Private Function new_table(rows, cols)
-    Set new_table = app().ActiveDocument.Tables.Add(app().Selection.Range, rows, cols)
+    Set t = app().ActiveDocument.Tables.Add(app().Selection.Range, rows, cols)
+    t.TopPadding = 0
+    t.RightPadding = 0
+    t.LeftPadding = 0
+    t.BottomPadding = 0
+    t.Select
+    Selection.style = app().ActiveDocument.Styles("No Spacing")
+    Call left
+    Set new_table = t
 End Function
 
 Private Function h1(s)
