@@ -93,7 +93,7 @@ Private Function new_table(rows, cols, border)
     t.LeftPadding = 0
     t.BottomPadding = 0
     t.Select
-    Selection.style = app().ActiveDocument.Styles("No Spacing")
+    app().Selection.style = app().ActiveDocument.Styles("No Spacing")
     Call left(1)
     If border Then
         t.Borders.Enable = True
@@ -207,18 +207,24 @@ Private Sub addTotalRow(t)
 End Sub
 
 Private Sub setColumnWidths(t)
-    Call t.Columns(1).SetWidth(404, wdAdjustNone)
-    Call t.Columns(2).SetWidth(72, wdAdjustNone)
+    ' wdAdjustNone = 0
+    my_wdAdjustNone = 0
+    Call t.Columns(1).SetWidth(404, my_wdAdjustNone)
+    Call t.Columns(2).SetWidth(72, my_wdAdjustNone)
 End Sub
 
 Private Sub centerTable(t)
+    ' wdAlignRowCenter = 1
+    my_wdAlignRowCenter = 1
     t.rows.Alignment = wdAlignRowCenter
 End Sub
 
 Private Sub formatHeaderRow(t)
     Set rng = t.rows(1).Range
     rng.Font.Bold = True
-    rng.ParagraphFormat.Alignment = wdAlignParagraphCenter
+    ' wdAlignParagraphCenter = 1
+    my_wdAlignParagraphCenter = 1
+    rng.ParagraphFormat.Alignment = my_wdAlignParagraphCenter
 End Sub
 
 Private Sub setTableFonts(t)
@@ -233,7 +239,9 @@ Private Sub setAlignmentForTimeData(t As table)
     Set rng = t.Cell(2, 2).Range
     rng.End = t.Cell(t.rows.Count, 2).Range.End
     rng.Select
-    app().Selection.ParagraphFormat.Alignment = wdAlignParagraphRight
+    ' wdAlignParagraphRight = 2
+    my_wdAlignParagraphRight = 2
+    app().Selection.ParagraphFormat.Alignment = my_wdAlignParagraphRight
 End Sub
 
 Private Sub italicizeSteps(t)
@@ -245,20 +253,28 @@ End Sub
 
 Private Sub setTableBorders(t)
     ' Format table borders
-    t.Borders.InsideLineWidth = wdLineWidth075pt
+    ' wdLineWidth075pt = 6
+    my_wdLineWidth075pt = 6
+    t.Borders.InsideLineWidth = my_wdLineWidth075pt
     Set rng = t.Cell(2, 1).Range
     rng.End = t.Cell(t.rows.Count - 1, 2).Range.End
     rng.Select
+    ' wdLineWidth150pt = 12
+    my_wdLineWidth150pt = 12
     app().Selection.Borders.OutsideLineWidth = wdLineWidth150pt
         
     Set rng = t.Cell(1, 1).Range
     rng.End = t.Cell(t.rows.Count, 1).Range.End
     rng.Select
-    Selection.Borders.OutsideLineStyle = wdLineStyleSingle
-    Selection.Borders.OutsideLineWidth = wdLineWidth150pt
+    ' wdLineStyleSingle = 1
+    my_wdLineStyleSingle = 1
+    Selection.Borders.OutsideLineStyle = my_wdLineStyleSingle
+    Selection.Borders.OutsideLineWidth = my_wdLineWidth150pt
     
-    t.Borders.OutsideLineStyle = wdLineStyleSingle
-    t.Borders.OutsideLineWidth = wdLineWidth225pt
+    t.Borders.OutsideLineStyle = my_wdLineStyleSingle
+    ' wdLineWidth225pt = 18
+    my_wdLineWidth225pt = 18
+    t.Borders.OutsideLineWidth = my_wdLineWidth225pt
 End Sub
 
 Private Sub setTablePadding(t)
@@ -279,9 +295,11 @@ Private Sub removeItalicsFromTimeData(t)
 End Sub
 
 Private Sub shadeBandedRows(t)
+    ' wdColorGray20 = 13421772
+    my_wdColorGray20 = 13421772
     For i = 2 To t.rows.Count - 1
         If i Mod 2 = 0 Then
-            t.rows(i).Shading.BackgroundPatternColor = wdColorGray20
+            t.rows(i).Shading.BackgroundPatternColor = my_wdColorGray20
         End If
     Next
 End Sub
