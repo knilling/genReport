@@ -1,3 +1,4 @@
+Attribute VB_Name = "NewMacros"
 '
 ' genReport
 '
@@ -22,7 +23,6 @@
 ' SOFTWARE.
 '
 '
-Attribute VB_Name = "NewMacros"
 Private Function app()
     Set app = Application
 End Function
@@ -187,47 +187,102 @@ Private Sub addRow(table)
 End Sub
 
 Private Sub addTableHeaders(t)
-
+    Call text("Step")
+    Call right(2)
+    Call text("Time (minutes)")
 End Sub
 
 Private Sub addTableData(t, steps)
-
+    Call t.Cell(1, 1).Select
+    For i = LBound(steps) To UBound(steps)
+        Call addRow(t)
+        Call text(steps(i))
+    Next
 End Sub
 
 Private Sub addTotalRow(t)
-
+    Call addRow(t)
+    Call text("Total Time")
 End Sub
 
 Private Sub setColumnWidths(t)
-
+    Call t.Columns(1).SetWidth(404, wdAdjustNone)
+    Call t.Columns(2).SetWidth(72, wdAdjustNone)
 End Sub
 
 Private Sub centerTable(t)
-
+    t.rows.Alignment = wdAlignRowCenter
 End Sub
 
 Private Sub formatHeaderRow(t)
-
+    Set rng = t.rows(1).Range
+    rng.Font.Bold = True
+    rng.ParagraphFormat.Alignment = wdAlignParagraphCenter
 End Sub
 
 Private Sub setTableFonts(t)
-
+    Set rng = t.rows(2).Range
+    rng.End = t.rows(t.rows.Count - 1).Range.End
+    rng.Font.Name = "Courier New"
+    t.Cell(t.rows.Count, 2).Range.Font.Name = "Courier New"
+    t.Range.Font.Size = 8
 End Sub
 
-Private Sub setAlignmentForTimeData(t)
-
+Private Sub setAlignmentForTimeData(t As table)
+    Set rng = t.Cell(2, 2).Range
+    rng.End = t.Cell(t.rows.Count, 2).Range.End
+    rng.Select
+    app().Selection.ParagraphFormat.Alignment = wdAlignParagraphRight
 End Sub
 
 Private Sub italicizeSteps(t)
-
+    Set rng = t.Cell(2, 1).Range
+    rng.End = t.Cell(t.rows.Count - 1, 1).Range.End
+    rng.Select
+    app().Selection.Font.Italic = True
 End Sub
 
 Private Sub setTableBorders(t)
+    ' Format table borders
+    t.Borders.InsideLineWidth = wdLineWidth075pt
+    Set rng = t.Cell(2, 1).Range
+    rng.End = t.Cell(t.rows.Count - 1, 2).Range.End
+    rng.Select
+    app().Selection.Borders.OutsideLineWidth = wdLineWidth150pt
+        
+    Set rng = t.Cell(1, 1).Range
+    rng.End = t.Cell(t.rows.Count, 1).Range.End
+    rng.Select
+    Selection.Borders.OutsideLineStyle = wdLineStyleSingle
+    Selection.Borders.OutsideLineWidth = wdLineWidth150pt
+    
+    t.Borders.OutsideLineStyle = wdLineStyleSingle
+    t.Borders.OutsideLineWidth = wdLineWidth225pt
+End Sub
 
+Private Sub setTablePadding(t)
+    t.LeftPadding = 5
+    t.RightPadding = 15
+End Sub
+
+Private Sub boldTotalsRow(t)
+    Set rng = t.rows(t.rows.Count).Range
+    rng.Select
+    Selection.Font.Bold = True
+End Sub
+
+Private Sub removeItalicsFromTimeData(t)
+    ' Make sure time data is not italicized
+    t.Columns(2).Select
+    Selection.Font.Italic = False
 End Sub
 
 Private Sub shadeBandedRows(t)
-
+    For i = 2 To t.rows.Count - 1
+        If i Mod 2 = 0 Then
+            t.rows(i).Shading.BackgroundPatternColor = wdColorGray20
+        End If
+    Next
 End Sub
 
 Private Sub time_estimate(steps)
@@ -238,96 +293,21 @@ Private Sub time_estimate(steps)
     ' Add Time Estimate Table
     Dim t As table
     Set t = new_table(1, 2, True)
-    
-    ' Add Table Headers
-    Call text("Step")
-    Call right(2)
-    Call text("Time (minutes)")
-    
-    ' Add Table Data
-    Call t.Range.Select
-    Call app().Selection.Collapse(1)
-    For i = LBound(steps) To UBound(steps)
-        Call addRow(t)
-        Call text(steps(i))
-    Next
-    
-    ' Add Total Row
-    Call addRow(t)
-    Call text("Total Time")
-    
-    ' Format Column Widths
-    Call t.Columns(1).SetWidth(404, wdAdjustNone)
-    Call t.Columns(2).SetWidth(72, wdAdjustNone)
-    
-    ' Center Table on the Page
-    t.rows.Alignment = wdAlignRowCenter
-    
-    ' Format Header Row
-    t.rows(1).Select
-    Selection.Font.Bold = True
-    Selection.ParagraphFormat.Alignment = wdAlignParagraphCenter
-    
-    ' Set Table Fonts
-    nRows = t.rows.Count
-    Dim rng As Range
-    Set rng = t.rows(2).Range
-    rng.End = t.rows(nRows - 1).Range.End
-    rng.Select
-    Selection.Font.Name = "Courier New"
-    
-    t.Cell(nRows, 2).Select
-    Selection.Font.Name = "Courier New"
-    
-    ' Set text alignment for Time Data
-    Set rng = t.Cell(2, 2).Range
-    rng.End = t.rows(nRows).Range.End
-    rng.Select
-    Selection.ParagraphFormat.Alignment = wdAlignParagraphRight
-    
-    ' Italicize Steps
-    Set rng = t.Cell(2, 1).Range
-    rng.End = t.Cell(nRows - 1, 1).Range.End
-    rng.Select
-    Selection.Font.Italic = True
-    
-    
-    ' Format table borders
-    t.Borders.InsideLineWidth = wdLineWidth075pt
-    
-    Set rng = t.Cell(2, 1).Range
-    rng.End = t.Cell(nRows - 1, 2).Range.End
-    rng.Select
-    Selection.Borders.OutsideLineWidth = wdLineWidth150pt
-    
-    Set rng = t.Cell(1, 1).Range
-    rng.End = t.Cell(nRows, 1).Range.End
-    rng.Select
-    Selection.Borders.OutsideLineStyle = wdLineStyleSingle
-    Selection.Borders.OutsideLineWidth = wdLineWidth150pt
-    
-    t.Borders.OutsideLineStyle = wdLineStyleSingle
-    t.Borders.OutsideLineWidth = wdLineWidth225pt
-    t.Select
-    Selection.Font.Size = 8
-    t.LeftPadding = 5
-    t.RightPadding = 15
-    
-    ' Bold the text in the Totals Row
-    Set rng = t.rows(nRows).Range
-    rng.Select
-    Selection.Font.Bold = True
-    
-    ' Make sure time data is not italicized
-    t.Columns(2).Select
-    Selection.Font.Italic = False
-    
-    For i = 2 To nRows - 1
-        If i Mod 2 = 0 Then
-            t.rows(i).Shading.BackgroundPatternColor = wdColorGray20
-        End If
-    Next
-    
+        
+    Call addTableHeaders(t)
+    Call addTableData(t, steps)
+    Call addTotalRow(t)
+    Call centerTable(t)
+    Call formatHeaderRow(t)
+    Call setTableFonts(t)
+    Call setAlignmentForTimeData(t)
+    Call italicizeSteps(t)
+    Call setTableBorders(t)
+    Call setTablePadding(t)
+    Call boldTotalsRow(t)
+    Call removeItalicsFromTimeData(t)
+    Call setColumnWidths(t)
+    Call shadeBandedRows(t)
     Call down(1)
     Call new_page
 End Sub
