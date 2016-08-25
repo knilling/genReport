@@ -259,8 +259,10 @@ Private Sub time_estimate(steps)
     Set rng = t.Cell(1, 1).Range
     rng.End = t.Cell(nRows, 1).Range.End
     rng.Select
+    Selection.Borders.OutsideLineStyle = wdLineStyleSingle
     Selection.Borders.OutsideLineWidth = wdLineWidth150pt
     
+    t.Borders.OutsideLineStyle = wdLineStyleSingle
     t.Borders.OutsideLineWidth = wdLineWidth225pt
     t.Select
     Selection.Font.Size = 8
