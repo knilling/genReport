@@ -22,6 +22,8 @@
 ' SOFTWARE.
 '
 '
+Attribute VB_Name = "NewMacros"
+
 Private Function app()
     Set app = Application
 End Function
