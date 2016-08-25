@@ -186,6 +186,50 @@ Private Sub addRow(table)
     Call down(1)
 End Sub
 
+Private Sub addTableHeaders(t)
+
+End Sub
+
+Private Sub addTableData(t, steps)
+
+End Sub
+
+Private Sub addTotalRow(t)
+
+End Sub
+
+Private Sub setColumnWidths(t)
+
+End Sub
+
+Private Sub centerTable(t)
+
+End Sub
+
+Private Sub formatHeaderRow(t)
+
+End Sub
+
+Private Sub setTableFonts(t)
+
+End Sub
+
+Private Sub setAlignmentForTimeData(t)
+
+End Sub
+
+Private Sub italicizeSteps(t)
+
+End Sub
+
+Private Sub setTableBorders(t)
+
+End Sub
+
+Private Sub shadeBandedRows(t)
+
+End Sub
+
 Private Sub time_estimate(steps)
     ' Add Time Estimate Section
     Call h1("Time Estimate Table")
